@@ -17,12 +17,11 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: {
-            tableName: 'users',
-            schema: 'schema'
-          },
+          model: 'users',
           key: 'id'
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         allowNull: false
       },
       created_at: {

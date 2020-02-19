@@ -5,6 +5,7 @@ import UserController from './app/controllers/UserController';
 
 // Middlewares
 import authMiddleware from './app/middlewares/auth';
+import checkRouter from './app/middlewares/checkRouter';
 
 const routes = new Router();
 
@@ -12,6 +13,10 @@ const routes = new Router();
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
+routes.get('/cpf', checkRouter, (req, res) => {
+  return res.send('Costa gay');
+});
 
 // Verifica se o usuário está autenticado
 routes.use(authMiddleware);
