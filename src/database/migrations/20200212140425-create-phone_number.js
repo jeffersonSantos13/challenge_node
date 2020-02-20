@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('phone_number', {
+    return queryInterface.createTable('phone_numbers', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -10,11 +10,11 @@ module.exports = {
         autoIncrement: true,
       },
       phone_number: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         allowNull: false,
         unique: true,
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'users',
@@ -36,6 +36,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('phone_number');
+    return queryInterface.dropTable('phone_numbers');
   }
 };

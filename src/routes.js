@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
+import PhoneController from './app/controllers/PhoneController';
+import AddressController from './app/controllers/AddressController';
 
 // Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -14,15 +16,22 @@ const routes = new Router();
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
-routes.get('/cpf', checkRouter, (req, res) => {
-  return res.send('Costa gay');
-});
-
 // Verifica se o usuário está autenticado
 routes.use(authMiddleware);
 
-routes.put('/api/v1/cpf', UserController.update);
+// Atualização do CPF
+routes.put('/api/v1/cpf', checkRouter, UserController.update);
 
-routes.put('/api/v1/full-name', UserController.update);
+// Atualização do nome
+routes.put('/api/v1/full-name', checkRouter, UserController.update);
+
+// Atualização da data de aniversário
+routes.put('/api/v1/birthday', checkRouter, UserController.update);
+
+// Atualização / Insere o número de telefone
+routes.put('/api/v1/phone-number', checkRouter, PhoneController);
+
+// Atualização / Insere o endereço
+routes.put('/api/v1/address', checkRouter, AddressController);
 
 export default routes;

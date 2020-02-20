@@ -13,21 +13,31 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+        defaultValue: '',
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password_hash: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       first_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: false,
+        defaultValue: '',
       },
       last_name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: false,
+        allowNull: true,
+        defaultValue: '',
       },
       birthday: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: false,
+        allowNull: true,
+        defaultValue: '',
       },
       created_at: {
         type: Sequelize.DATE,

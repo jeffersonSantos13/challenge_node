@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 
-import User from '../models/User';
+import User from '../models/Users';
 import authConfig from '../../config/auth';
 
 class SessionController {
@@ -13,14 +13,9 @@ class SessionController {
       password: Yup.string().required(),
     });
 
-    // Válida se o e-mail foi informado e é um e-mail valido
-    if (!(await schema.isValid(req.body.email))) {
-      return res.status(401).json({ error: 'E-mail não informado' });
-    }
-
-    // Verifia se a senha foi informado
-    if (!(await schema.isValid(req.body.password))) {
-      return res.status(401).json({ error: 'Senha não informado' });
+    // Válida se o e-mail e a senha foram informados é um e-mail valido
+    if (!(await schema.isValid(req.body))) {
+      return res.status(401).json({ error: 'E-mail ou senha não informados' });
     }
 
     const { email, password } = req.body;
@@ -28,11 +23,11 @@ class SessionController {
     const user = await User.findOne({where: { email } });
 
     if (!user) {
-      return res.status(401).json({ error: 'Usuário ' });
+      return res.status(401).json({ error: 'Usuário não encontrado' });
     }
 
     if(!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: 'Password does not match' });
+      return res.status(401).json({ error: 'Senha inválida' });
     }
 
     const { id } = user;

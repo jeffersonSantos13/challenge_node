@@ -1,5 +1,8 @@
-import User from '../models/User';
 import * as Yup from 'yup';
+import { cpf } from 'cpf-cnpj-validator';
+import { isValid, parseISO } from 'date-fns';
+
+import User from '../models/Users';
 
 class UserController {
   // Cadastrando usuário
@@ -11,14 +14,9 @@ class UserController {
       password: Yup.string().required(),
     });
 
-    // Válida se o e-mail foi informado e é um e-mail valido
-    if (!(await schema.isValid(req.body.email))) {
-      return res.status(401).json({ error: 'E-mail não informado' });
-    }
-
-    // Verifica se o e-mail foi informado
-    if (!(await schema.isValid(req.body.password))) {
-      return res.status(401).json({ error: 'Senha não informado' });
+    // Válida se o e-mail e a senha foram informados é um e-mail valido
+    if (!(await schema.isValid(req.body))) {
+      return res.status(401).json({ error: 'E-mail ou senha não informados' });
     }
 
     // Verifica se o usuário já existe
@@ -44,30 +42,22 @@ class UserController {
       birthday: Yup.string(),
     });
 
-   // Válida se o e-mail foi informado e é um e-mail valido
-   if (!(await schema.isValid(req.body.email))) {
-      return res.status(401).json({ error: 'E-mail não informado' });
+    // Verifica se o CPF é válido
+    if (req.body.cpf && !cpf.isValid(req.body.cpf)) {
+      return res.status(401).json({ error: 'CPF informado inválido' });
     }
 
-    const { email } = req.body;
+    // Verifica se a data informada é válida
+    if (req.body.birthday && !isValid(parseISO(req.body.birthday))) {
+      return res.status(401).json({ error: 'Data informada inválida' });
+    }
 
     const user = await User.findByPk(req.userId);
 
-    if (email && email !== user.email) {
-      const userExists = await User.findOne({ where: { email } });
+    // Atualização das informações do usuário
+    await user.update(req.body);
 
-      if (userExists) {
-        return res.status(400).json({ error: 'Usuário já existe.' });
-      }
-    }
-
-    const { id, name } = await user.update(req.body);
-
-    return res.status(200).json({
-      id,
-      name,
-      email,
-    });
+    return res.status(200).json(req.nextEndPoint);
   }
 }
 
