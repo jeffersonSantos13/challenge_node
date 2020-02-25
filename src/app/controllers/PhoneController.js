@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import Phone from '../models/Phone_numbers';
+import Phone_numbers from '../models/Phone_numbers';
 
 export default async (req, res) => {
   const schema = Yup.object().shape({
@@ -14,7 +14,7 @@ export default async (req, res) => {
   const { phone_number } = req.body;
 
   // Verifica se o número de telefone existe
-  const phone = await Phone.findOne({
+  const phone = await Phone_numbers.findOne({
     where: {
       phone_number,
       user_id: req.userId,
@@ -23,7 +23,7 @@ export default async (req, res) => {
 
   // Caso não exista o telefone, insere
   if (!phone) {
-    await Phone.create({
+    await Phone_numbers.create({
       phone_number,
       user_id: req.userId,
     });
@@ -31,9 +31,6 @@ export default async (req, res) => {
     await phone.update({ phone_number });
   };
 
-  return res.json({
-    success: true,
-    next_end_point: 'address'
-  });
+  return res.json(req.nextEndPoint);
 
 };;

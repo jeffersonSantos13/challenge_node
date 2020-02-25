@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Adrress extends Model {
+class Address extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -13,6 +13,7 @@ class Adrress extends Model {
       },
       {
         sequelize,
+        tableName: 'addresses'
       }
     );
 
@@ -21,8 +22,8 @@ class Adrress extends Model {
 
   // Associando os campos de chave estrangeira
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'address' });
   }
 }
 
-export default Adrress;
+export default Address;

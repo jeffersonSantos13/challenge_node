@@ -11,8 +11,11 @@ module.exports = {
     order: 3,
     response: 'phone-number',
   },
-  address: {
+  phone_number: {
     order: 4,
-    response: 'decimal',
+    response: 'address',
+  },
+  address: {
+    order: 5
   }
 };

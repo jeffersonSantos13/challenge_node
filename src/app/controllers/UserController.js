@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { cpf } from 'cpf-cnpj-validator';
 import { isValid, parseISO } from 'date-fns';
 
-import User from '../models/Users';
+import Users from '../models/Users';
 
 class UserController {
   // Cadastrando usuário
@@ -20,13 +20,13 @@ class UserController {
     }
 
     // Verifica se o usuário já existe
-    const userExists = await User.findOne({ where: { email: req.body.email } });
+    const userExists = await Users.findOne({ where: { email: req.body.email } });
 
     if (userExists) {
       return res.status(400).json({ error: 'E-mail informado já existe' });
     }
 
-    const { id, email } = await User.create(req.body);
+    const { id, email } = await Users.create(req.body);
 
     return res.json({
       id,
@@ -36,11 +36,9 @@ class UserController {
 
   /* Atualiza as informações do usuário */
   async update(req, res) {
-    const schema = Yup.object({
-      name: Yup.string(),
-      cpf: Yup.string(),
-      birthday: Yup.string(),
-    });
+
+    let [,,,url] = req.originalUrl.split('/');
+    url = url.replace('-', '_');
 
     // Verifica se o CPF é válido
     if (req.body.cpf && !cpf.isValid(req.body.cpf)) {
@@ -52,7 +50,7 @@ class UserController {
       return res.status(401).json({ error: 'Data informada inválida' });
     }
 
-    const user = await User.findByPk(req.userId);
+    const user = await Users.findByPk(req.userId);
 
     // Atualização das informações do usuário
     await user.update(req.body);

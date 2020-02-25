@@ -8,6 +8,7 @@ class Phone_numbers extends Model {
       },
       {
         sequelize,
+        tableName: 'phone_numbers'
       }
     );
 
@@ -16,7 +17,7 @@ class Phone_numbers extends Model {
 
   // Associando os campos de chave estrangeira
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'phone' });
   }
 }
 

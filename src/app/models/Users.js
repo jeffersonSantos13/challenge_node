@@ -8,7 +8,15 @@ class User extends Model {
         email: Sequelize.STRING,
         cpf: Sequelize.STRING,
         birthday: Sequelize.STRING,
-        full_name: Sequelize.VIRTUAL,
+        full_name: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `${this.first_name} ${this.last_name}`;
+          },
+          set(value) {
+            throw new Error('Do not try to set the `fullName` value!');
+          }
+        },
         first_name: Sequelize.STRING,
         last_name: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
@@ -16,6 +24,7 @@ class User extends Model {
       },
       {
         sequelize,
+        tableName: 'users',
       }
     );
 
@@ -49,6 +58,12 @@ class User extends Model {
     });
 
     return this;
+  }
+
+  // Associando os campos de chave estrangeira
+  static associate(models) {
+    this.hasMany(models.Phone_numbers, { foreignKey: 'user_id', as: 'phone_numbers' });
+    this.hasMany(models.Address, { foreignKey: 'user_id', as: 'addresses' });
   }
 
   checkPassword(password) {

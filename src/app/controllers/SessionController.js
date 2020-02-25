@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 
-import User from '../models/Users';
+import Users from '../models/Users';
 import authConfig from '../../config/auth';
 
 class SessionController {
@@ -20,7 +20,7 @@ class SessionController {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({where: { email } });
+    const user = await Users.findOne({where: { email } });
 
     if (!user) {
       return res.status(401).json({ error: 'Usuário não encontrado' });

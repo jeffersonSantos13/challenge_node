@@ -5,29 +5,23 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js --ignore __tests__",
-    "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cep-promise": "^3.0.9",
     "cpf-cnpj-validator": "^0.1.1",
-    "dotenv": "^6.2.0",
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.17.1",
-    "cep-promise": "^3.0.9",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.18.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.4",
+    "sequelize": "^5.21.5",
     "yup": "^0.28.1"
   },
   "devDependencies": {
-    "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "sequelize-cli": "^5.5.1",
-    "sucrase": "^3.12.1",
-    "sqlite3": "^4.0.6"
+    "sucrase": "^3.12.1"
   }
 }
